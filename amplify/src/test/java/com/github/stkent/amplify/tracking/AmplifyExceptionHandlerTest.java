@@ -33,6 +33,7 @@ public class AmplifyExceptionHandlerTest extends BaseTest {
 
     @Mock
     private IAppLevelEventRulesManager mockAppLevelEventRulesManager;
+
     @Mock
     private Thread.UncaughtExceptionHandler mockDefaultExceptionHandler;
 
