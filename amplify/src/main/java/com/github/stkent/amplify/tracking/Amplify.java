@@ -355,9 +355,9 @@ public final class Amplify implements IEventListener {
     // Begin query methods
 
     public void promptIfReady(@NonNull final IPromptView promptView) {
-        if (feedbackEmailAddress == null) {
+        if (feedbackFormListener == null && feedbackEmailAddress == null) {
             throw new IllegalStateException(
-                    "Must provide email address before attempting to prompt.");
+                    "Must provide a feedback form listener or an email address before attempting to prompt.");
         }
 
         if (shouldPrompt()) {
