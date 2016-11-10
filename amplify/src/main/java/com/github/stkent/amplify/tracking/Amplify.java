@@ -22,7 +22,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
-import android.widget.Toast;
 
 import com.github.stkent.amplify.logging.ILogger;
 import com.github.stkent.amplify.logging.NoOpLogger;
@@ -53,6 +52,7 @@ import com.github.stkent.amplify.utils.PlayStoreUtil;
 import com.github.stkent.amplify.utils.appinfo.AppInfoUtil;
 import com.github.stkent.amplify.utils.appinfo.IAppInfoProvider;
 import com.github.stkent.amplify.utils.feedback.DefaultEmailContentProvider;
+import com.github.stkent.amplify.utils.feedback.FeedbackUtil;
 import com.github.stkent.amplify.utils.feedback.IEmailContentProvider;
 
 @SuppressWarnings({"PMD.ExcessiveParameterList", "checkstyle:parameternumber"})
@@ -325,20 +325,24 @@ public final class Amplify implements IEventListener {
             final Activity activity = activityReferenceManager.getValidatedActivity();
 
             if (activity != null) {
-//                final FeedbackUtil feedbackUtil = new FeedbackUtil(
-//                        new FeedbackDataProvider(appInfoProvider),
-//                        emailContentProvider,
-//                        new EnvironmentCapabilitiesProvider(appInfoProvider),
-//                        feedbackEmailAddress);
-//
-//                feedbackUtil.showFeedbackEmailChooser(activity);
 
                 FeedbackDialog feedbackDialog = new FeedbackDialog.Builder(activity)
                         .onRatingBarFormSumbit(new FeedbackDialog.FeedbackFormListener() {
                             @Override
                             public void onFormSubmitted(String feedback) {
-                                // callback to calling class
-                                Toast.makeText(activity, "Thanks for your feedback!", Toast.LENGTH_SHORT).show();
+
+                                if (feedbackFormListener!= null) {
+                                    feedbackFormListener.onFormSubmitted(feedback);
+                                }
+                                else {
+                                    final FeedbackUtil feedbackUtil = new FeedbackUtil(
+                                            new FeedbackDataProvider(appInfoProvider),
+                                            emailContentProvider,
+                                            new EnvironmentCapabilitiesProvider(appInfoProvider),
+                                            feedbackEmailAddress);
+
+                                    feedbackUtil.showFeedbackEmailChooser(activity);
+                                }
                             }
                         }).build();
 
