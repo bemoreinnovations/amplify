@@ -83,7 +83,7 @@ public final class Amplify implements IEventListener {
         return initSharedInstance(app, Constants.DEFAULT_BACKING_SHARED_PREFERENCES_NAME);
     }
 
-    private static Amplify initSharedInstance(
+    public static Amplify initSharedInstance(
             @NonNull final Application app,
             @NonNull final String backingSharedPreferencesName) {
 
