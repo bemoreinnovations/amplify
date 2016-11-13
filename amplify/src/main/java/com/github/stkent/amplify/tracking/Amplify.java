@@ -373,14 +373,15 @@ public final class Amplify implements IEventListener {
     }
 
     public boolean shouldPrompt() {
-        return alwaysShow | (
+        return alwaysShow | ((
                   appLevelEventRulesManager.shouldAllowFeedbackPrompt()
                 & environmentBasedRulesManager.shouldAllowFeedbackPrompt()
                 & totalEventCountRulesManager.shouldAllowFeedbackPrompt()
                 & firstEventTimeRulesManager.shouldAllowFeedbackPrompt()
-                & lastEventTimeRulesManager.shouldAllowFeedbackPrompt()
-                & lastEventVersionCodeRulesManager.shouldAllowFeedbackPrompt()
-                & lastEventVersionNameRulesManager.shouldAllowFeedbackPrompt());
+                & lastEventTimeRulesManager.shouldAllowFeedbackPrompt())
+
+                || (lastEventVersionCodeRulesManager.shouldAllowFeedbackPrompt()
+                & lastEventVersionNameRulesManager.shouldAllowFeedbackPrompt()));
     }
 
     // End query methods
