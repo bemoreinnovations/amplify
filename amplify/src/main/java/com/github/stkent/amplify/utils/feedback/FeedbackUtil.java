@@ -31,17 +31,20 @@ public final class FeedbackUtil {
     private final IEmailContentProvider emailContentProvider;
     private final IEnvironmentCapabilitiesProvider environmentCapabilitiesProvider;
     private final String feedbackEmailAddress;
+    private String feedbackSubjectLine;
 
     public FeedbackUtil(
             @NonNull final IFeedbackDataProvider feedbackDataProvider,
             @NonNull final IEmailContentProvider emailContentProvider,
             @NonNull final IEnvironmentCapabilitiesProvider environmentCapabilitiesProvider,
-            @NonNull final String feedbackEmailAddress) {
+            @NonNull final String feedbackEmailAddress,
+            @NonNull final String feedbackSubjectLine) {
 
         this.feedbackDataProvider = feedbackDataProvider;
         this.emailContentProvider = emailContentProvider;
         this.environmentCapabilitiesProvider = environmentCapabilitiesProvider;
         this.feedbackEmailAddress = feedbackEmailAddress;
+        this.feedbackSubjectLine = feedbackSubjectLine;
     }
 
     public void showFeedbackEmailChooser(@NonNull final Activity activity) {
@@ -63,8 +66,14 @@ public final class FeedbackUtil {
         final Intent result = new Intent(Intent.ACTION_SENDTO);
         result.setData(Uri.parse("mailto:"));
         result.putExtra(Intent.EXTRA_EMAIL, new String[]{feedbackEmailAddress});
-        result.putExtra(Intent.EXTRA_SUBJECT,
-                emailContentProvider.getEmailSubjectLine(feedbackDataProvider));
+
+        if (feedbackSubjectLine != null) {
+            result.putExtra(Intent.EXTRA_SUBJECT, feedbackSubjectLine);
+        }
+        else {
+            result.putExtra(Intent.EXTRA_SUBJECT,
+                    emailContentProvider.getEmailSubjectLine(feedbackDataProvider));
+        }
 
         result.putExtra(Intent.EXTRA_TEXT,
                 emailContentProvider.getInitialEmailBody(feedbackDataProvider));

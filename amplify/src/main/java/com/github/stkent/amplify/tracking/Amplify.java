@@ -123,6 +123,7 @@ public final class Amplify implements IEventListener {
     private boolean alwaysShow;
     private String packageName;
     private String feedbackEmailAddress;
+    private String feedbackSubjectLine;
     private FeedbackDialog.FeedbackFormListener feedbackFormListener;
     private IEmailContentProvider emailContentProvider = new DefaultEmailContentProvider();
 
@@ -201,6 +202,10 @@ public final class Amplify implements IEventListener {
     public Amplify setFeedbackEmailAddress(@NonNull final String feedbackEmailAddress) {
         this.feedbackEmailAddress = feedbackEmailAddress;
         return this;
+    }
+
+    public void setFeedbackSubjectLine(String feedbackSubjectLine) {
+        this.feedbackSubjectLine = feedbackSubjectLine;
     }
 
     public Amplify setFeedbackEmailContentProvider(
@@ -339,7 +344,8 @@ public final class Amplify implements IEventListener {
                                             new FeedbackDataProvider(appInfoProvider),
                                             emailContentProvider,
                                             new EnvironmentCapabilitiesProvider(appInfoProvider),
-                                            feedbackEmailAddress);
+                                            feedbackEmailAddress,
+                                            feedbackSubjectLine);
 
                                     feedbackUtil.showFeedbackEmailChooser(activity);
                                 }
