@@ -88,9 +88,9 @@ public final class Amplify implements IEventListener {
             @NonNull final String backingSharedPreferencesName) {
 
         synchronized (Amplify.class) {
-            if (sharedInstance == null) {
+//            if (sharedInstance == null) {
                 sharedInstance = new Amplify(app, backingSharedPreferencesName);
-            }
+//            }
         }
 
         return sharedInstance;
