@@ -204,8 +204,9 @@ public final class Amplify implements IEventListener {
         return this;
     }
 
-    public void setFeedbackSubjectLine(String feedbackSubjectLine) {
+    public Amplify setFeedbackSubjectLine(String feedbackSubjectLine) {
         this.feedbackSubjectLine = feedbackSubjectLine;
+        return this;
     }
 
     public Amplify setFeedbackEmailContentProvider(
