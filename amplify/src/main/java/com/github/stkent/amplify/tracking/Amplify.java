@@ -310,10 +310,13 @@ public final class Amplify implements IEventListener {
         return this;
     }
 
-    public Amplify resetCountOnVersionUpgrade(IEvent event) {
+    public Amplify resetCountOnVersionUpgrade(IEvent... events) {
 
         if (lastEventVersionNameRulesManager.shouldAllowFeedbackPrompt() || lastEventVersionCodeRulesManager.shouldAllowFeedbackPrompt()) {
-            totalEventCountRulesManager.resetTrackingValue(event);
+
+            for (IEvent event : events) {
+                totalEventCountRulesManager.resetTrackingValue(event);
+            }
         }
 
         return this;
