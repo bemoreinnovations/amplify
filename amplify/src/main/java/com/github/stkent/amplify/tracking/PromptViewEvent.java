@@ -35,10 +35,22 @@ public enum PromptViewEvent implements IEvent {
     public String getTrackingKey() {
         switch (this) {
             case PROMPT_SHOWN:
+                if (getAssociatedEvent() != null) {
+                    return "PROMPT_SHOWN_" + getAssociatedEvent().getTrackingKey();
+                }
+
                 return "PROMPT_SHOWN";
             case THANKS_SHOWN:
+                if (getAssociatedEvent() != null) {
+                    return "THANKS_SHOWN_" + getAssociatedEvent().getTrackingKey();
+                }
+
                 return "THANKS_SHOWN";
             case PROMPT_DISMISSED:
+                if (getAssociatedEvent() != null) {
+                    return "PROMPT_DISMISSED_" + getAssociatedEvent().getTrackingKey();
+                }
+
                 return "PROMPT_DISMISSED";
         }
 
@@ -51,5 +63,13 @@ public enum PromptViewEvent implements IEvent {
 
     public void setAssociatedEvent(IEvent associatedEvent) {
         this.associatedEvent = associatedEvent;
+    }
+
+    public static PromptViewEvent getPromptShownEvent(IEvent associatedEvent) {
+        PromptViewEvent promptViewEvent = PROMPT_SHOWN;
+
+        promptViewEvent.setAssociatedEvent(associatedEvent);
+
+        return promptViewEvent;
     }
 }
