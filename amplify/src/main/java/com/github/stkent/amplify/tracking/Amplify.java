@@ -413,11 +413,11 @@ public final class Amplify implements IEventListener {
         return alwaysShow | (
                 appLevelEventRulesManager.shouldAllowFeedbackPrompt()
                         & environmentBasedRulesManager.shouldAllowFeedbackPrompt()
-                        & totalEventCountRulesManager.shouldAllowFeedbackPrompt()
-                        & firstEventTimeRulesManager.shouldAllowFeedbackPrompt()
-                        & lastEventTimeRulesManager.shouldAllowFeedbackPrompt()
-                        & lastEventVersionCodeRulesManager.shouldAllowFeedbackPrompt()
-                        & lastEventVersionNameRulesManager.shouldAllowFeedbackPrompt());
+                        & totalEventCountRulesManager.shouldAllowFeedbackPrompt(event)
+                        & firstEventTimeRulesManager.shouldAllowFeedbackPrompt(event)
+                        & lastEventTimeRulesManager.shouldAllowFeedbackPrompt(event)
+                        & lastEventVersionCodeRulesManager.shouldAllowFeedbackPrompt(event)
+                        & lastEventVersionNameRulesManager.shouldAllowFeedbackPrompt(event));
     }
 
     // End query methods

@@ -142,6 +142,43 @@ public abstract class BaseEventsManager<T> implements IEventsManager<T> {
         return result;
     }
 
+    @Override
+    public boolean shouldAllowFeedbackPrompt(IEvent event) {
+        boolean result = true;
+
+        List<IEventBasedRule<T>> rules = internalMap.get(event);
+
+        for (final IEventBasedRule<T> rule : rules) {
+            final T cachedEventValue = getCachedTrackingValue(event);
+
+            if (cachedEventValue != null) {
+                Amplify.getLogger().d(
+                        event.getTrackingKey()
+                                + " event "
+                                + getEventTrackingStatusStringSuffix(cachedEventValue));
+
+                if (!rule.shouldAllowFeedbackPrompt(cachedEventValue)) {
+                    logPromptBlockedMessage(rule, event);
+                    result = false;
+                }
+            } else {
+                Amplify.getLogger().d(
+                        "No tracked value for "
+                                + getTrackedEventDimensionDescription().toLowerCase(Locale.US)
+                                + " of "
+                                + event.getTrackingKey()
+                                + " event");
+
+                if (!rule.shouldAllowFeedbackPromptByDefault()) {
+                    logPromptBlockedMessage(rule, event);
+                    result = false;
+                }
+            }
+        }
+
+        return result;
+    }
+
     protected boolean isTrackingEvent(@NonNull final IEvent event) {
         return internalMap.containsKey(event);
     }
