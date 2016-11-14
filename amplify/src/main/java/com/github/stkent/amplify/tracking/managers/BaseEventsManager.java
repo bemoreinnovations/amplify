@@ -150,6 +150,10 @@ public abstract class BaseEventsManager<T> implements IEventsManager<T> {
 
         List<IEventBasedRule<T>> rules = internalMap.get(event);
 
+        if (rules == null) {
+            rules = new ArrayList<>();
+        }
+
         // get all associated prompt view events
         for (IEvent event1 : internalMap.keySet()) {
             if (event1 instanceof PromptViewEvent) {
@@ -164,32 +168,30 @@ public abstract class BaseEventsManager<T> implements IEventsManager<T> {
             }
         }
 
-        if (rules != null) {
-            for (final IEventBasedRule<T> rule : rules) {
-                final T cachedEventValue = getCachedTrackingValue(event);
+        for (final IEventBasedRule<T> rule : rules) {
+            final T cachedEventValue = getCachedTrackingValue(event);
 
-                if (cachedEventValue != null) {
-                    Amplify.getLogger().d(
-                            event.getTrackingKey()
-                                    + " event "
-                                    + getEventTrackingStatusStringSuffix(cachedEventValue));
+            if (cachedEventValue != null) {
+                Amplify.getLogger().d(
+                        event.getTrackingKey()
+                                + " event "
+                                + getEventTrackingStatusStringSuffix(cachedEventValue));
 
-                    if (!rule.shouldAllowFeedbackPrompt(cachedEventValue)) {
-                        logPromptBlockedMessage(rule, event);
-                        result = false;
-                    }
-                } else {
-                    Amplify.getLogger().d(
-                            "No tracked value for "
-                                    + getTrackedEventDimensionDescription().toLowerCase(Locale.US)
-                                    + " of "
-                                    + event.getTrackingKey()
-                                    + " event");
+                if (!rule.shouldAllowFeedbackPrompt(cachedEventValue)) {
+                    logPromptBlockedMessage(rule, event);
+                    result = false;
+                }
+            } else {
+                Amplify.getLogger().d(
+                        "No tracked value for "
+                                + getTrackedEventDimensionDescription().toLowerCase(Locale.US)
+                                + " of "
+                                + event.getTrackingKey()
+                                + " event");
 
-                    if (!rule.shouldAllowFeedbackPromptByDefault()) {
-                        logPromptBlockedMessage(rule, event);
-                        result = false;
-                    }
+                if (!rule.shouldAllowFeedbackPromptByDefault()) {
+                    logPromptBlockedMessage(rule, event);
+                    result = false;
                 }
             }
         }
