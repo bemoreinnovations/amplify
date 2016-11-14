@@ -372,16 +372,42 @@ public final class Amplify implements IEventListener {
         }
     }
 
+    public void promptIfReady(@NonNull final IPromptView promptView, IEvent event) {
+        if (feedbackFormListener == null && feedbackEmailAddress == null) {
+            throw new IllegalStateException(
+                    "Must provide a feedback form listener or an email address before attempting to prompt.");
+        }
+
+        if (shouldPrompt(event)) {
+            promptView.getPresenter().start();
+        }
+    }
+
     public boolean shouldPrompt() {
-        return alwaysShow | ((
+
+        return alwaysShow | (
                   appLevelEventRulesManager.shouldAllowFeedbackPrompt()
                 & environmentBasedRulesManager.shouldAllowFeedbackPrompt()
                 & totalEventCountRulesManager.shouldAllowFeedbackPrompt()
                 & firstEventTimeRulesManager.shouldAllowFeedbackPrompt()
-                & lastEventTimeRulesManager.shouldAllowFeedbackPrompt())
+                & lastEventTimeRulesManager.shouldAllowFeedbackPrompt()
+                & lastEventVersionCodeRulesManager.shouldAllowFeedbackPrompt()
+                & lastEventVersionNameRulesManager.shouldAllowFeedbackPrompt());
+    }
 
-                || (lastEventVersionCodeRulesManager.shouldAllowFeedbackPrompt()
-                & lastEventVersionNameRulesManager.shouldAllowFeedbackPrompt()));
+    public boolean shouldPrompt(IEvent event) {
+        if (lastEventVersionCodeRulesManager.shouldAllowFeedbackPrompt() || lastEventVersionNameRulesManager.shouldAllowFeedbackPrompt()) {
+            totalEventCountRulesManager.resetTrackingValue(event);
+        }
+
+        return alwaysShow | (
+                appLevelEventRulesManager.shouldAllowFeedbackPrompt()
+                        & environmentBasedRulesManager.shouldAllowFeedbackPrompt()
+                        & totalEventCountRulesManager.shouldAllowFeedbackPrompt()
+                        & firstEventTimeRulesManager.shouldAllowFeedbackPrompt()
+                        & lastEventTimeRulesManager.shouldAllowFeedbackPrompt()
+                        & lastEventVersionCodeRulesManager.shouldAllowFeedbackPrompt()
+                        & lastEventVersionNameRulesManager.shouldAllowFeedbackPrompt());
     }
 
     // End query methods

@@ -47,7 +47,8 @@ public final class Settings<T> implements ISettings<T> {
             editor.putInt(trackingKey, (Integer) value);
         } else if (value.getClass().equals(Float.class)) {
             editor.putLong(trackingKey, (Long) value);
-        } else {
+        }
+        else {
             throw new IllegalArgumentException(
                     "Event value must be one of String, Boolean, Long, Integer or Float");
         }
@@ -69,4 +70,11 @@ public final class Settings<T> implements ISettings<T> {
         return null;
     }
 
+    public void clearTrackingValue(@NonNull final String trackingKey) {
+        // todo: do we need sync locking around this access?
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.remove(trackingKey);
+        editor.apply();
+    }
 }

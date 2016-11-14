@@ -44,5 +44,4 @@ public final class TotalEventCountRulesManager extends BaseEventsManager<Integer
     public Integer getUpdatedTrackingValue(@Nullable final Integer cachedTrackingValue) {
         return cachedTrackingValue == null ? 1 : cachedTrackingValue + 1;
     }
-
 }

@@ -26,5 +26,4 @@ public interface IRulesManager {
      * @return true if all managed prompt timing rules are satisfied; false otherwise
      */
     boolean shouldAllowFeedbackPrompt();
-
 }

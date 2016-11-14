@@ -23,5 +23,10 @@ package com.github.stkent.amplify.tracking.interfaces;
  * @param <T> the type of the values tracked by this manager (Integer, Long or String)
  */
 public interface IEventsManager<T> extends IEventTracker<T>, IRulesManager {
-
+    /**
+     * Reset the tracking value for the specified event
+     *
+     * @param event
+     */
+    void resetTrackingValue(IEvent event);
 }

@@ -44,4 +44,10 @@ public interface ISettings<T> {
     @Nullable
     T readTrackingValue(@NonNull final String trackingKey);
 
+    /**
+     * Reset the tracking value
+     *
+     * @param trackingKey the key with which to clear the value for
+     */
+    void clearTrackingValue(@NonNull final String trackingKey);
 }

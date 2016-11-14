@@ -142,11 +142,11 @@ public abstract class BaseEventsManager<T> implements IEventsManager<T> {
         return result;
     }
 
-    private boolean isTrackingEvent(@NonNull final IEvent event) {
+    protected boolean isTrackingEvent(@NonNull final IEvent event) {
         return internalMap.containsKey(event);
     }
 
-    private String getTrackingKey(@NonNull final IEvent event) {
+    protected String getTrackingKey(@NonNull final IEvent event) {
         return AMPLIFY_TRACKING_KEY_PREFIX
                 + event.getTrackingKey()
                 + "_"
@@ -165,7 +165,7 @@ public abstract class BaseEventsManager<T> implements IEventsManager<T> {
     }
 
     @Nullable
-    private T getCachedTrackingValue(@NonNull final IEvent event) {
+    protected T getCachedTrackingValue(@NonNull final IEvent event) {
         return settings.readTrackingValue(getTrackingKey(event));
     }
 
@@ -178,4 +178,7 @@ public abstract class BaseEventsManager<T> implements IEventsManager<T> {
               + " associated with " + event.getTrackingKey() + " event");
     }
 
+    public void resetTrackingValue(IEvent event) {
+        settings.clearTrackingValue(getTrackingKey(event));
+    }
 }
