@@ -18,12 +18,12 @@ package com.github.stkent.amplify.tracking;
 
 import android.support.annotation.NonNull;
 
-import com.github.stkent.amplify.tracking.interfaces.IEvent;
+import com.github.stkent.amplify.tracking.interfaces.IGlobalEvent;
 
 import static com.github.stkent.amplify.utils.Constants.EXHAUSTIVE_SWITCH_EXCEPTION_MESSAGE;
 
 @SuppressWarnings("PMD.StdCyclomaticComplexity")
-public enum PromptInteractionEvent implements IEvent {
+public enum PromptInteractionEvent implements IGlobalEvent {
 
     USER_INDICATED_POSITIVE_OPINION,
     USER_INDICATED_CRITICAL_OPINION,

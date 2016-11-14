@@ -28,6 +28,8 @@ public enum PromptViewEvent implements IEvent {
     THANKS_SHOWN,
     PROMPT_DISMISSED;
 
+    private IEvent associatedEvent;
+
     @NonNull
     @Override
     public String getTrackingKey() {
@@ -43,4 +45,11 @@ public enum PromptViewEvent implements IEvent {
         throw new IllegalStateException(EXHAUSTIVE_SWITCH_EXCEPTION_MESSAGE);
     }
 
+    public IEvent getAssociatedEvent() {
+        return associatedEvent;
+    }
+
+    public void setAssociatedEvent(IEvent associatedEvent) {
+        this.associatedEvent = associatedEvent;
+    }
 }

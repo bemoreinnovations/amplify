@@ -20,9 +20,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.github.stkent.amplify.tracking.Amplify;
+import com.github.stkent.amplify.tracking.PromptViewEvent;
 import com.github.stkent.amplify.tracking.interfaces.IEvent;
 import com.github.stkent.amplify.tracking.interfaces.IEventBasedRule;
 import com.github.stkent.amplify.tracking.interfaces.IEventsManager;
+import com.github.stkent.amplify.tracking.interfaces.IGlobalEvent;
 import com.github.stkent.amplify.tracking.interfaces.ISettings;
 
 import java.util.ArrayList;
@@ -147,6 +149,20 @@ public abstract class BaseEventsManager<T> implements IEventsManager<T> {
         boolean result = true;
 
         List<IEventBasedRule<T>> rules = internalMap.get(event);
+
+        // get all associated prompt view events
+        for (IEvent event1 : internalMap.keySet()) {
+            if (event1 instanceof PromptViewEvent) {
+                PromptViewEvent promptViewEvent = (PromptViewEvent) event1;
+
+                if (event.equals(promptViewEvent.getAssociatedEvent())) {
+                    rules.addAll(internalMap.get(promptViewEvent));
+                }
+            }
+            else if (event1 instanceof IGlobalEvent) {
+                rules.addAll(internalMap.get(event1));
+            }
+        }
 
         if (rules != null) {
             for (final IEventBasedRule<T> rule : rules) {
