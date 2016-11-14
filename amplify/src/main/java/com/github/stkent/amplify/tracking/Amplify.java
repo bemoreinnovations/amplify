@@ -293,6 +293,7 @@ public final class Amplify implements IEventListener {
             @NonNull final IEventBasedRule<String> rule) {
 
         lastEventVersionNameRulesManager.addEventBasedRule(event, rule);
+
         return this;
     }
 
@@ -306,6 +307,15 @@ public final class Amplify implements IEventListener {
 
     public Amplify setPackageName(@NonNull final String packageName) {
         this.packageName = packageName;
+        return this;
+    }
+
+    public Amplify resetCountOnVersionUpgrade(IEvent event) {
+
+        if (lastEventVersionNameRulesManager.shouldAllowFeedbackPrompt() || lastEventVersionCodeRulesManager.shouldAllowFeedbackPrompt()) {
+            totalEventCountRulesManager.resetTrackingValue(event);
+        }
+
         return this;
     }
 
@@ -396,9 +406,6 @@ public final class Amplify implements IEventListener {
     }
 
     public boolean shouldPrompt(IEvent event) {
-        if (lastEventVersionCodeRulesManager.shouldAllowFeedbackPrompt() || lastEventVersionNameRulesManager.shouldAllowFeedbackPrompt()) {
-            totalEventCountRulesManager.resetTrackingValue(event);
-        }
 
         return alwaysShow | (
                 appLevelEventRulesManager.shouldAllowFeedbackPrompt()
