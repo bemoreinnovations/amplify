@@ -167,12 +167,14 @@ public abstract class BaseEventsManager<T> implements IEventsManager<T> {
 
                 if (internalMap.get(event1) != null) {
                     associatedRules.addAll(internalMap.get(event1));
+                    result = result && shouldAllowFeedbackPrompt(event1, associatedRules);
                 }
             }
             else if (event1 instanceof IAssociatedEvent) {
                 if (((IAssociatedEvent) event1).getAssociatedEvent() != null) {
                     if (((IAssociatedEvent) event1).getAssociatedEvent().equals(event)) {
                         associatedRules.addAll(internalMap.get(event1));
+                        result = result && shouldAllowFeedbackPrompt(event1, associatedRules);
                     }
                 }
             }
