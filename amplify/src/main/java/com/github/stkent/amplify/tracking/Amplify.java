@@ -361,7 +361,7 @@ public final class Amplify implements IEventListener {
                                             feedbackEmailAddress,
                                             feedbackSubjectLine);
 
-                                    feedbackUtil.showFeedbackEmailChooser(activity);
+                                    feedbackUtil.showFeedbackEmailChooser(feedback, activity);
                                 }
                             }
                         }).build();

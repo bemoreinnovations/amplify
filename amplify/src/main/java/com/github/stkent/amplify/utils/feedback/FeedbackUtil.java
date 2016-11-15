@@ -47,8 +47,8 @@ public final class FeedbackUtil {
         this.feedbackSubjectLine = feedbackSubjectLine;
     }
 
-    public void showFeedbackEmailChooser(@NonNull final Activity activity) {
-        final Intent feedbackEmailIntent = getFeedbackEmailIntent();
+    public void showFeedbackEmailChooser(String feedback, @NonNull final Activity activity) {
+        final Intent feedbackEmailIntent = getFeedbackEmailIntent(feedback);
 
         if (!environmentCapabilitiesProvider.canHandleIntent(feedbackEmailIntent)) {
             Amplify.getLogger().e("Unable to present email client chooser.");
@@ -62,7 +62,7 @@ public final class FeedbackUtil {
     }
 
     @NonNull
-    private Intent getFeedbackEmailIntent() {
+    private Intent getFeedbackEmailIntent(String feedback) {
         final Intent result = new Intent(Intent.ACTION_SENDTO);
         result.setData(Uri.parse("mailto:"));
         result.putExtra(Intent.EXTRA_EMAIL, new String[]{feedbackEmailAddress});
@@ -75,8 +75,11 @@ public final class FeedbackUtil {
                     emailContentProvider.getEmailSubjectLine(feedbackDataProvider));
         }
 
+        String text = feedback + "\n\n";
+        text += emailContentProvider.getInitialEmailBody(feedbackDataProvider);
+
         result.putExtra(Intent.EXTRA_TEXT,
-                emailContentProvider.getInitialEmailBody(feedbackDataProvider));
+                text);
 
         return result;
     }
