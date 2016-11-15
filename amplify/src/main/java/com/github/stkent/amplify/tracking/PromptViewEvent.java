@@ -72,4 +72,9 @@ public enum PromptViewEvent implements IEvent {
 
         return promptViewEvent;
     }
+
+    @Override
+    public String toString() {
+        return getTrackingKey();
+    }
 }
