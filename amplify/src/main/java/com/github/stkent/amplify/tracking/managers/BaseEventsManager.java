@@ -20,7 +20,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.github.stkent.amplify.tracking.Amplify;
-import com.github.stkent.amplify.tracking.PromptViewEvent;
 import com.github.stkent.amplify.tracking.interfaces.IEvent;
 import com.github.stkent.amplify.tracking.interfaces.IEventBasedRule;
 import com.github.stkent.amplify.tracking.interfaces.IEventsManager;
@@ -157,19 +156,24 @@ public abstract class BaseEventsManager<T> implements IEventsManager<T> {
             rules = new ArrayList<>();
         }
 
+        result = shouldAllowFeedbackPrompt(event, rules);
+
         // get all associated prompt view events
         for (IEvent event1 : internalMap.keySet()) {
-            if (event1 instanceof PromptViewEvent) {
-                PromptViewEvent promptViewEvent = (PromptViewEvent) event1;
+            if (event1 instanceof IGlobalEvent) {
 
-                if (event.equals(promptViewEvent.getAssociatedEvent())) {
-                    rules.addAll(internalMap.get(promptViewEvent));
+                if (internalMap.get(event1) != null) {
+                    List<IEventBasedRule<T>> globalRules = new ArrayList<>(internalMap.get(event1));
+                    result = result && shouldAllowFeedbackPrompt(event, globalRules);
                 }
             }
-            else if (event1 instanceof IGlobalEvent) {
-                rules.addAll(internalMap.get(event1));
-            }
         }
+
+        return result;
+    }
+
+    public boolean shouldAllowFeedbackPrompt(IEvent event, List<IEventBasedRule<T>> rules) {
+        boolean result = true;
 
         for (final IEventBasedRule<T> rule : rules) {
             final T cachedEventValue = getCachedTrackingValue(event);
