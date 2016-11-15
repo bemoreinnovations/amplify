@@ -164,7 +164,7 @@ public abstract class BaseEventsManager<T> implements IEventsManager<T> {
 
                 if (internalMap.get(event1) != null) {
                     List<IEventBasedRule<T>> globalRules = new ArrayList<>(internalMap.get(event1));
-                    result = result && shouldAllowFeedbackPrompt(event, globalRules);
+                    result = result && shouldAllowFeedbackPrompt(event1, globalRules);
                 }
             }
         }
