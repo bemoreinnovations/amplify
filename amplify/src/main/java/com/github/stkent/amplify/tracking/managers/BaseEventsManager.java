@@ -148,7 +148,7 @@ public abstract class BaseEventsManager<T> implements IEventsManager<T> {
     public boolean shouldAllowFeedbackPrompt(IEvent event) {
         boolean result = true;
 
-        List<IEventBasedRule<T>> rules = internalMap.get(event);
+        List<IEventBasedRule<T>> rules = new ArrayList<>(internalMap.get(event));
 
         if (rules == null) {
             rules = new ArrayList<>();
