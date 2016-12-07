@@ -19,10 +19,11 @@ package com.github.stkent.amplify.tracking;
 import android.support.annotation.NonNull;
 
 import com.github.stkent.amplify.tracking.interfaces.IEvent;
+import com.github.stkent.amplify.tracking.interfaces.IGlobalEvent;
 
 import static com.github.stkent.amplify.utils.Constants.EXHAUSTIVE_SWITCH_EXCEPTION_MESSAGE;
 
-public enum PromptViewEvent implements IEvent {
+public enum PromptViewEvent implements IGlobalEvent {
 
     PROMPT_SHOWN,
     THANKS_SHOWN,
